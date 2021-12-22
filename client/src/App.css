@@ -54,6 +54,8 @@
   border: 0;
   border-radius: 5px;
   background: rgb(239, 239, 239);
+  max-width: 300px;
+  margin-left: 9rem;
 }
 
 .waveButton-dark {
