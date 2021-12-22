@@ -8,6 +8,7 @@ const App = () => {
    * Just a state variable we use to store our user's public wallet.
    */
   const [currentAccount, setCurrentAccount] = useState("");
+  const [theme, setTheme] = useState("light");
 
   /**
    * Create a variable here that holds the contract address after you deploy!
@@ -101,6 +102,10 @@ const App = () => {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   /*
    * This runs our function when the page loads.
    */
@@ -109,27 +114,36 @@ const App = () => {
   }, []);
 
   return (
-    <div className="mainContainer">
+    <div className={`mainContainer-${theme}`}>
+      <button
+        style={{ fontSize: 30 }}
+        className="btn-clear"
+        onClick={toggleTheme}
+      >
+        {theme === "light" ? "🔦" : "💡"}
+      </button>
       <div className="dataContainer">
-        <div className="header">👋 Hey there!</div>
+        <div className="greeting">
+          <div className="header">👋 Hey there!</div>
 
-        <div className="bio">
-          I am Sailesh and I just hopped on the buildspace ship! Connect your
-          Ethereum wallet and wave at me!
-        </div>
+          <div className={`bio-${theme}`}>
+            I am Sailesh and I just hopped on the buildspace ship! Connect your
+            Ethereum wallet and wave at me!
+          </div>
 
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
-        </button>
-
-        {/*
-         * If there is no currentAccount render this button
-         */}
-        {!currentAccount && (
-          <button className="waveButton" onClick={connectWallet}>
-            Connect Wallet
+          <button className={`waveButton-${theme}`} onClick={wave}>
+            Wave at Me
           </button>
-        )}
+
+          {/*
+           * If there is no currentAccount render this button
+           */}
+          {!currentAccount && (
+            <button className={`waveButton-${theme}`} onClick={connectWallet}>
+              Connect Wallet
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
