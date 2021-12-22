@@ -12,7 +12,7 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: black;
+  background: #1c2022;
 }
 
 .dataContainer {
@@ -38,13 +38,12 @@
 
 .bio-light {
   text-align: center;
-
   margin-top: 16px;
 }
 
 .bio-dark {
   text-align: center;
-  color: gray;
+  color: rgb(250, 204, 163);
   margin-top: 16px;
 }
 
@@ -56,6 +55,7 @@
   border-radius: 5px;
   background: rgb(239, 239, 239);
   width: 150px;
+  width: 200px;
 }
 
 .waveButton-dark {
@@ -64,9 +64,9 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  background: #141414;
-  color: gray;
-  width: 150px;
+  background: #414141;
+  color: rgb(250, 204, 163);
+  width: 200px;
 }
 
 .btn-clear {
