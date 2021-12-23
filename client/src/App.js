@@ -9,6 +9,8 @@ const App = () => {
    */
   const [currentAccount, setCurrentAccount] = useState("");
   const [theme, setTheme] = useState("light");
+  const [waves, setWaves] = useState(0);
+  const [mining, setMining] = useState(false);
 
   /**
    * Create a variable here that holds the contract address after you deploy!
@@ -39,6 +41,7 @@ const App = () => {
         const account = accounts[0];
         console.log("Found an authorized account:", account);
         setCurrentAccount(account);
+        getCount();
       } else {
         console.log("No authorized account found");
       }
@@ -70,6 +73,28 @@ const App = () => {
     }
   };
 
+  const getCount = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const wavePortalContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        let count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+        setWaves(count.toNumber());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const wave = async () => {
     try {
       const { ethereum } = window;
@@ -94,6 +119,7 @@ const App = () => {
 
         let count = await wavePortalContract.getTotalWaves();
         console.log("Retrieved total wave count...", count.toNumber());
+        setWaves(count.toNumber());
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -113,39 +139,45 @@ const App = () => {
     checkIfWalletIsConnected();
   }, []);
 
+  useEffect(() => {
+    getCount();
+  }, []);
+
   return (
-    <div className={`mainContainer-${theme}`}>
-      <button
-        style={{ fontSize: 30 }}
-        className="btn-clear"
-        onClick={toggleTheme}
-      >
-        {theme === "light" ? "🔦" : "💡"}
-      </button>
-      <div className="dataContainer">
-        <div className="greeting">
-          <div className="header">👋 Hey there!</div>
+    <React.Suspense fallback={<h1>Loading</h1>}>
+      <div className={`mainContainer-${theme}`}>
+        <button
+          style={{ fontSize: 30 }}
+          className="btn-clear"
+          onClick={toggleTheme}
+        >
+          {theme === "light" ? "🔦" : "💡"}
+        </button>
+        <div className="dataContainer">
+          <div className="greeting">
+            <div className="header">👋 Hey there!</div>
 
-          <div className={`bio-${theme}`}>
-            I am Sailesh and I just hopped on the buildspace ship! Connect your
-            Ethereum wallet and wave at me!
-          </div>
+            <div className={`bio-${theme}`}>
+              I am Sailesh and I just hopped on the buildspace ship! Connect
+              your Ethereum wallet and wave at me!
+            </div>
 
-          <button className={`waveButton-${theme}`} onClick={wave}>
-            Wave at Me
-          </button>
-
-          {/*
-           * If there is no currentAccount render this button
-           */}
-          {!currentAccount && (
-            <button className={`waveButton-${theme}`} onClick={connectWallet}>
-              Connect Wallet
+            <button className={`waveButton-${theme}`} onClick={wave}>
+              Wave at Me
             </button>
-          )}
+            {/*
+             * If there is no currentAccount render this button
+             */}
+            {!currentAccount && (
+              <button className={`waveButton-${theme}`} onClick={connectWallet}>
+                Connect Wallet
+              </button>
+            )}
+            {currentAccount && <p>No. of waves: {waves}</p>}
+          </div>
         </div>
       </div>
-    </div>
+    </React.Suspense>
   );
 };
 
