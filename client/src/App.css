@@ -69,6 +69,10 @@
   width: 200px;
 }
 
+.wave-counter-dark {
+  color: rgb(250, 204, 163);
+}
+
 .btn-clear {
   border: none;
   background: transparent;

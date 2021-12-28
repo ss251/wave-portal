@@ -173,7 +173,9 @@ const App = () => {
                 Connect Wallet
               </button>
             )}
-            {currentAccount && <p>No. of waves: {waves}</p>}
+            {currentAccount && (
+              <p className={`wave-counter-${theme}`}>No. of waves: {waves}</p>
+            )}
           </div>
         </div>
       </div>
