@@ -25,7 +25,7 @@
 .greeting {
   display: flex;
   flex-direction: column;
-  margin-top: 10rem;
+
   align-items: center;
 }
 

@@ -228,6 +228,7 @@ const App = () => {
                   style={{
                     backgroundColor: "OldLace",
                     padding: "8px",
+                    marginBottom: "10px",
                     borderRadius: "10px",
                   }}
                 >
