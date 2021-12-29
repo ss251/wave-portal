@@ -43,6 +43,7 @@ const App = () => {
         console.log("Found an authorized account:", account);
         setCurrentAccount(account);
         getCount();
+        getAllWaves();
       } else {
         console.log("No authorized account found");
       }
@@ -70,6 +71,7 @@ const App = () => {
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
       getCount();
+      getAllWaves();
     } catch (error) {
       console.log(error);
     }
@@ -186,10 +188,6 @@ const App = () => {
     checkIfWalletIsConnected();
   }, []);
 
-  useEffect(() => {
-    getAllWaves();
-  }, []);
-
   return (
     <React.Suspense fallback={<h1>Loading</h1>}>
       <div className={`mainContainer-${theme}`}>
@@ -223,23 +221,22 @@ const App = () => {
             {currentAccount && (
               <p className={`wave-counter-${theme}`}>No. of waves: {waves}</p>
             )}
-            {currentAccount &&
-              allWaves.map((wave, index) => {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      backgroundColor: "OldLace",
-                      padding: "8px",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <div>Address: {wave.address}</div>
-                    <div>Time: {wave.timestamp.toString()}</div>
-                    <div>Message: {wave.message}</div>
-                  </div>
-                );
-              })}
+            {allWaves.map((wave, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    backgroundColor: "OldLace",
+                    padding: "8px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <div>Address: {wave.address}</div>
+                  <div>Time: {wave.timestamp.toString()}</div>
+                  <div>Message: {wave.message}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
