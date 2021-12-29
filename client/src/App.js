@@ -9,7 +9,7 @@ const App = () => {
    */
   const [currentAccount, setCurrentAccount] = useState("");
   const [theme, setTheme] = useState("light");
-  const [waves, setWaves] = useState(0);
+  const [waves, setWaves] = useState(null);
   const [mining, setMining] = useState(false);
 
   /**
@@ -138,12 +138,6 @@ const App = () => {
    */
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
-
-  useEffect(() => {
-    if (currentAccount) {
-      getCount();
-    }
   }, []);
 
   return (
