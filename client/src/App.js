@@ -68,6 +68,7 @@ const App = () => {
 
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
+      getCount();
     } catch (error) {
       console.log(error);
     }
@@ -140,7 +141,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    getCount();
+    if (currentAccount) {
+      getCount();
+    }
   }, []);
 
   return (
