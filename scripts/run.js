@@ -1,7 +1,7 @@
 const main = async () => {
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
   const waveContract = await waveContractFactory.deploy({
-    value: hre.ethers.utils.parseEther("0.1"),
+    value: hre.ethers.utils.parseEther("0.5"),
   });
   await waveContract.deployed();
   console.log("Contract addy:", waveContract.address);
@@ -20,7 +20,7 @@ const main = async () => {
   /*
    * Send Wave
    */
-  let waveTxn = await waveContract.wave("A message!");
+  let waveTxn = await waveContract.wave("Hi!");
   await waveTxn.wait();
 
   /*
