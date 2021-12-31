@@ -11,12 +11,13 @@ const App = () => {
   const [theme, setTheme] = useState("light");
   const [waves, setWaves] = useState(null);
   const [allWaves, setAllWaves] = useState([]);
+  const [message, setMessage] = useState("");
   const [mining, setMining] = useState(false);
 
   /**
    * Create a variable here that holds the contract address after you deploy!
    */
-  const contractAddress = "0xB5B3F0ad0F88F63e27315cb9fB00EB0214D8c30e";
+  const contractAddress = "0x49D23CFd3db258A81CA0c21b5C861Ef419255EE8";
 
   const contractABI = abi.abi;
 
@@ -100,36 +101,40 @@ const App = () => {
   };
 
   const wave = async () => {
-    try {
-      const { ethereum } = window;
+    if (message === "") {
+      alert("Please enter a message");
+    } else {
+      try {
+        const { ethereum } = window;
 
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const wavePortalContract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const wavePortalContract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
 
-        /*
-         * Execute the actual wave from your smart contract
-         */
-        const waveTxn = await wavePortalContract.wave("this is a message");
-        console.log("Mining...", waveTxn.hash);
+          /*
+           * Execute the actual wave from your smart contract
+           */
+          const waveTxn = await wavePortalContract.wave(message);
+          console.log("Mining...", waveTxn.hash);
 
-        await waveTxn.wait();
-        console.log("Mined -- ", waveTxn.hash);
+          await waveTxn.wait();
+          console.log("Mined -- ", waveTxn.hash);
 
-        let count = await wavePortalContract.getTotalWaves();
-        console.log("Retrieved total wave count...", count.toNumber());
-        setWaves(count.toNumber());
-        getAllWaves();
-      } else {
-        console.log("Ethereum object doesn't exist!");
+          let count = await wavePortalContract.getTotalWaves();
+          console.log("Retrieved total wave count...", count.toNumber());
+          setWaves(count.toNumber());
+          getAllWaves();
+        } else {
+          console.log("Ethereum object doesn't exist!");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -182,6 +187,10 @@ const App = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  const handleChange = (event) => {
+    setMessage(event.target.value);
+  };
+
   /*
    * This runs our function when the page loads.
    */
@@ -207,6 +216,20 @@ const App = () => {
               I am Sailesh and I just hopped on the buildspace ship! Connect
               your Ethereum wallet and wave at me!
             </div>
+
+            {currentAccount && (
+              <div className={`message-container-${theme}`}>
+                <input
+                  typeof="text"
+                  id="message"
+                  className={`input-${theme}`}
+                  placeholder={`Enter your message here :)`}
+                  autoComplete="off"
+                  value={message}
+                  onChange={handleChange}
+                ></input>
+              </div>
+            )}
 
             <button className={`waveButton-${theme}`} onClick={wave}>
               Wave at Me
