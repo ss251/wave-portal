@@ -16,7 +16,7 @@ const App = () => {
   /**
    * Create a variable here that holds the contract address after you deploy!
    */
-  const contractAddress = "0x4B07a218Ac8eaC64c2dE7d0ccf8B6eadf6c24BEB";
+  const contractAddress = "0xB5B3F0ad0F88F63e27315cb9fB00EB0214D8c30e";
 
   const contractABI = abi.abi;
 
