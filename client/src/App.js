@@ -17,7 +17,7 @@ const App = () => {
   /**
    * Create a variable here that holds the contract address after you deploy!
    */
-  const contractAddress = "0x49D23CFd3db258A81CA0c21b5C861Ef419255EE8";
+  const contractAddress = "0xCb555bb1A9D319bc6143eF3D93dEFFA1ceD06b57";
 
   const contractABI = abi.abi;
 
@@ -130,12 +130,12 @@ const App = () => {
           let count = await wavePortalContract.getTotalWaves();
           console.log("Retrieved total wave count...", count.toNumber());
           setWaves(count.toNumber());
-          getAllWaves();
         } else {
           console.log("Ethereum object doesn't exist!");
         }
       } catch (error) {
         console.log(error);
+        setMining(null);
         alert(error);
       }
     }
@@ -204,6 +204,46 @@ const App = () => {
    */
   useEffect(() => {
     checkIfWalletIsConnected();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * Listen in for emitter events!
+   */
+  useEffect(() => {
+    let wavePortalContract;
+
+    const onNewWave = (from, timestamp, message) => {
+      console.log("NewWave", from, timestamp, message);
+      setAllWaves((prevState) => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ]);
+      getCount();
+    };
+
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      wavePortalContract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer
+      );
+      wavePortalContract.on("NewWave", onNewWave);
+    }
+
+    return () => {
+      if (wavePortalContract) {
+        wavePortalContract.off("NewWave", onNewWave);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
