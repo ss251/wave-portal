@@ -254,23 +254,26 @@ const App = () => {
             {currentAccount && (
               <p className={`wave-counter-${theme}`}>No. of waves: {waves}</p>
             )}
-            {allWaves.map((wave, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{
-                    backgroundColor: "OldLace",
-                    padding: "8px",
-                    marginBottom: "10px",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <div>Address: {wave.address}</div>
-                  <div>Time: {wave.timestamp.toString()}</div>
-                  <div>Message: {wave.message}</div>
-                </div>
-              );
-            })}
+            {allWaves
+              .slice(0)
+              .reverse()
+              .map((wave, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      backgroundColor: "OldLace",
+                      padding: "8px",
+                      marginBottom: "10px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <div>Address: {wave.address}</div>
+                    <div>Time: {wave.timestamp.toString()}</div>
+                    <div>Message: {wave.message}</div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
