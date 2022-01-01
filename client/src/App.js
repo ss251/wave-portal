@@ -12,7 +12,7 @@ const App = () => {
   const [waves, setWaves] = useState(null);
   const [allWaves, setAllWaves] = useState([]);
   const [message, setMessage] = useState("");
-  const [mining, setMining] = useState(false);
+  const [mining, setMining] = useState(null);
 
   /**
    * Create a variable here that holds the contract address after you deploy!
@@ -120,9 +120,11 @@ const App = () => {
            * Execute the actual wave from your smart contract
            */
           const waveTxn = await wavePortalContract.wave(message);
+          setMining("⛏ ⛏ ⛏...");
           console.log("Mining...", waveTxn.hash);
 
           await waveTxn.wait();
+          setMining(null);
           console.log("Mined -- ", waveTxn.hash);
 
           let count = await wavePortalContract.getTotalWaves();
@@ -191,6 +193,10 @@ const App = () => {
     setMessage(event.target.value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
+
   /*
    * This runs our function when the page loads.
    */
@@ -218,22 +224,21 @@ const App = () => {
             </div>
 
             {currentAccount && (
-              <div className={`message-container-${theme}`}>
-                <input
-                  typeof="text"
-                  id="message"
-                  className={`input-${theme}`}
-                  placeholder={`Enter your message here :)`}
-                  autoComplete="off"
-                  value={message}
-                  onChange={handleChange}
-                ></input>
+              <div className="message-container">
+                <form onSubmit={handleSubmit}>
+                  <textarea
+                    typeof="text"
+                    id="message"
+                    className={`input-${theme}`}
+                    placeholder={`Enter your message here :)`}
+                    autoComplete="off"
+                    value={message}
+                    onChange={handleChange}
+                  />
+                </form>
               </div>
             )}
 
-            <button className={`waveButton-${theme}`} onClick={wave}>
-              Wave at Me
-            </button>
             {/*
              * If there is no currentAccount render this button
              */}
@@ -242,6 +247,10 @@ const App = () => {
                 Connect Wallet
               </button>
             )}
+            <button className={`waveButton-${theme}`} onClick={wave}>
+              Wave at Me
+            </button>
+            {mining && <p>{mining}</p>}
             {currentAccount && (
               <p className={`wave-counter-${theme}`}>No. of waves: {waves}</p>
             )}
