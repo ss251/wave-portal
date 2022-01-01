@@ -136,6 +136,7 @@ const App = () => {
         }
       } catch (error) {
         console.log(error);
+        alert(error);
       }
     }
   };
@@ -191,6 +192,7 @@ const App = () => {
 
   const handleChange = (event) => {
     setMessage(event.target.value);
+    setMining(null);
   };
 
   const handleSubmit = (event) => {
